@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/routes.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String name = "";
+  bool changeButton = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -17,7 +24,7 @@ class LoginPage extends StatelessWidget {
               height: 20.0,
             ),
             Text(
-              "Welcome",
+              "Welcome $name",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             SizedBox(
@@ -30,14 +37,52 @@ class LoginPage extends StatelessWidget {
                 children: [
                   TextFormField(
                     decoration: InputDecoration(
-                        hintText: "Enter User Name", labelText: "USER NAME"),
+                        hintText: "Enter User Name", labelText: "User Name"),
+                    onChanged: (value) {
+                      name = value;
+                      setState(() {});
+                    },
                   ),
                   TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(
-                        hintText: "Enter Password", labelText: "PASSWORD"),
+                        hintText: "Enter Password", labelText: "Password"),
                   ),
                   Padding(
+                    padding: const EdgeInsets.all(100.0),
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          changeButton = true;
+                        });
+                        await Future.delayed(Duration(seconds: 1));
+                        Navigator.pushNamed(context, Myroutes.homeRoute);
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(seconds: 1),
+                        width: changeButton ? 50 : 150,
+                        height: 50,
+                        alignment: Alignment.center,
+                        child: changeButton
+                            ? Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                        decoration: BoxDecoration(
+                            color: Colors.deepOrange,
+                            borderRadius:
+                                BorderRadius.circular(changeButton ? 50 : 10)),
+                      ),
+                    ),
+                  )
+                  /*Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: ElevatedButton(
                       onPressed: () {
@@ -45,7 +90,7 @@ class LoginPage extends StatelessWidget {
                       },
                       child: Text("LOGIN"),
                     ),
-                  )
+                  )*/
                 ],
               ),
             )
